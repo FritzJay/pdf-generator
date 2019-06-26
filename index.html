@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>PDF Generator</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>PDF Generator</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
+  <body>
+    <h1>PDF Generator</h1>
 
-<body>
-  <h1>PDF Generator</h1>
+    <!-- The 'name' attributes of the input tags are used as 
+    identifiers while parsing data from the form and must 
+    match the identifiers used in the PDF themselves -->
+    <form id="default-form" class="container">
+      <label for="Technician">Technician</label>
+      <input name="Technician" type="text" required />
+      <label for="Date">Date</label>
+      <input name="Date" type="date" required />
+      <label for="SO">S/O</label>
+      <input name="SO" type="text" required />
+      <label for="Customer">Customer</label>
+      <input name="Customer" type="text" required />
+      <button type="submit" onsubmit="submitForm()">Generate</button>
+    </form>
 
-  <form id="default-form" class="container">
-    <label for="Technician">Technician</label>
-    <input name="Technician" type="text" required />
-    <label for="Date">Date</label>
-    <input name="Date" type="date" required />
-    <label for="SO">S/O</label>
-    <input name="SO" type="text" required />
-    <label for="Customer">Customer</label>
-    <input name="Customer" type="text" required />
-    <button type="submit" onsubmit="submitForm()">Generate</button>
-  </form>
-
-  <!-- You can also require other files to run in this process -->
-  <script src="./renderer.js"></script>
-</body>
-
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+  </body>
 </html>

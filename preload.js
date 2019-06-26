@@ -34,10 +34,6 @@ function _formatInputsData(inputs) {
   return fields
 }
 
-function _getDateValues(date) {
-  return
-}
-
 function _initializeForms() {
   document.getElementById('default-form').onsubmit = function (event) {
     event.preventDefault()

@@ -12,6 +12,7 @@
     "electron": "^5.0.5"
   },
   "dependencies": {
+    "electron-reload": "^1.4.0",
     "pdfform.js": "^1.0.14"
   }
 }

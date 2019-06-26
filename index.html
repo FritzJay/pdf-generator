@@ -3,16 +3,24 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Hello World!</title>
+  <title>PDF Generator</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-  <h1>Hello World!</h1>
-  We are using Node.js <span id="node-version"></span>,
-  Chromium <span id="chrome-version"></span>,
-  and Electron <span id="electron-version"></span>.
+  <h1>PDF Generator</h1>
 
-  <div id="canvas-container"></div>
+  <form id="default-form" class="container">
+    <label for="Technician">Technician</label>
+    <input name="Technician" type="text" required />
+    <label for="Date">Date</label>
+    <input name="Date" type="date" required />
+    <label for="SO">S/O</label>
+    <input name="SO" type="text" required />
+    <label for="Customer">Customer</label>
+    <input name="Customer" type="text" required />
+    <button type="submit" onsubmit="submitForm()">Generate</button>
+  </form>
 
   <!-- You can also require other files to run in this process -->
   <script src="./renderer.js"></script>

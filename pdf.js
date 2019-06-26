@@ -26,11 +26,15 @@ function _fillPDFForms(pdfBytes, fields) {
 }
 
 function _convertPropertyValuesToArrays(fields) {
-  for (let key in fields) {
+  const updatedFields = {}
+  for (let key in {
+      ...fields
+    }) {
     if (fields.hasOwnProperty(key)) {
-      fields[key] = Array(fields[key])
+      updatedFields[key] = Array(fields[key])
     }
   }
+  return updatedFields
 }
 
 function _saveFile(data, destination) {

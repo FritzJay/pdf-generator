@@ -42,7 +42,7 @@ function _saveFile(data, destination) {
     if (error) {
       console.error(error)
     }
-    console.log('Saved!')
+    console.log('Saved pdf to ' + destination)
   })
 }
 

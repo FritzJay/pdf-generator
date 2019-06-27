@@ -8,7 +8,6 @@ const {
 
 const {
   createProfile,
-  updateProfile,
   readProfiles,
   readProfile,
   deleteProfile
@@ -27,6 +26,12 @@ function submitForm() {
   generatePDFs(pdfTypes, fields)
 }
 
+function selectProfile() {
+  const name = document.getElementById('profile-select').value
+  const profile = readProfile(name)
+  _populateInfoForm(profile)
+}
+
 function _getInfoFromPage() {
   const infoInputs = document.querySelectorAll('#info-fieldset input')
   return formatInputsDataForView(infoInputs)
@@ -35,12 +40,6 @@ function _getInfoFromPage() {
 function _getPDFTypesFromPage() {
   const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
   return formatInputsDataForView(pdfTypesInputs)
-}
-
-function selectProfile() {
-  const name = document.getElementById('profile-select').value
-  const profile = readProfile(name)
-  _populateInfoForm(profile)
 }
 
 function _populateInfoForm(savedInfo) {
@@ -107,13 +106,6 @@ function _setProfilesSaveButtonOnClick(select) {
   }
 }
 
-function _saveProfile(select) {
-  const name = document.getElementById('profile-name-input').value
-  const info = _getInfoFromPage()
-  createProfile(name, info)
-  _populateProfilesSelect(select)
-}
-
 function _setProfilesDeleteButtonOnClick(select) {
   document.getElementById('profile-delete-button').onclick = function (event) {
     event.preventDefault()
@@ -121,4 +113,11 @@ function _setProfilesDeleteButtonOnClick(select) {
     deleteProfile(name)
     _populateProfilesSelect(select)
   }
+}
+
+function _saveProfile(select) {
+  const name = document.getElementById('profile-name-input').value
+  const info = _getInfoFromPage()
+  createProfile(name, info)
+  _populateProfilesSelect(select)
 }

@@ -1,30 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>PDF Generator</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
 
-  <body>
-    <h1>PDF Generator</h1>
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Generator</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
 
-    <!-- The 'name' attributes of the input tags are used as 
+<body>
+  <h1>PDF Generator</h1>
+
+  <!-- The 'name' attributes of the input tags are used as 
     identifiers while parsing data from the form and must 
     match the identifiers used in the PDF themselves -->
-    <form id="default-form" class="container">
-      <label for="Technician">Technician</label>
-      <input name="Technician" type="text" required />
-      <label for="Date">Date</label>
-      <input name="Date" type="date" required />
-      <label for="SO">S/O</label>
-      <input name="SO" type="text" required />
-      <label for="Customer">Customer</label>
-      <input name="Customer" type="text" required />
-      <button type="submit" onsubmit="submitForm()">Generate</button>
-    </form>
+  <form id="default-form" class="container">
+    <h3>Info:</h3>
+    <label for="Technician">Technician</label>
+    <input name="Technician" type="text" />
+    <label for="Date">Date</label>
+    <input name="Date" type="date" />
+    <label for="SO">S/O</label>
+    <input name="SO" type="text" />
+    <label for="Customer">Customer</label>
+    <input name="Customer" type="text" />
+    <h3>Forms:</h3>
+    <p>Specify the number of forms you need generated.</p>
+    <label for="form1-amount">Form 1:</label>
+    <input name="form1-amount" type="number" placeholder="0" />
+    <label for="form2-amount">Form 2:</label>
+    <input name="form2-amount" type="number" placeholder="0" />
+    <button type="submit" onsubmit="submitForm()">Generate</button>
+  </form>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
-  </body>
+  <!-- You can also require other files to run in this process -->
+  <script src="./renderer.js"></script>
+</body>
+
 </html>

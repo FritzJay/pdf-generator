@@ -3,6 +3,13 @@ const {
   FIELDS
 } = require('./lib/pdf')
 
+const {
+  createProfile,
+  updateProfile,
+  readProfiles,
+  deleteProfile
+} = require('./lib/profiles')
+
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {

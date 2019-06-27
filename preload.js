@@ -77,7 +77,7 @@ function _initializeProfiles() {
   _setProfilesSelectOnChange(select)
   _populateProfilesSelect(select)
   _setProfilesSaveButtonOnClick(select)
-  _setProfilesDeleteButtonOnClick()
+  _setProfilesDeleteButtonOnClick(select)
 }
 
 function _setProfilesSelectOnChange(select) {
@@ -88,6 +88,7 @@ function _setProfilesSelectOnChange(select) {
 }
 
 function _populateProfilesSelect(select) {
+  select.innerHTML = ''
   const profiles = readProfiles()
   for (let key in profiles) {
     if (profiles.hasOwnProperty(key)) {
@@ -113,9 +114,11 @@ function _saveProfile(select) {
   _populateProfilesSelect(select)
 }
 
-function _setProfilesDeleteButtonOnClick() {
+function _setProfilesDeleteButtonOnClick(select) {
   document.getElementById('profile-delete-button').onclick = function (event) {
     event.preventDefault()
-    console.log('delete clicked')
+    const name = document.getElementById('profile-select').value
+    deleteProfile(name)
+    _populateProfilesSelect(select)
   }
 }

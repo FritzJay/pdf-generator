@@ -1,7 +1,7 @@
 const {
   generatePDFs,
   FIELDS
-} = require('./pdf')
+} = require('./lib/pdf')
 
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.

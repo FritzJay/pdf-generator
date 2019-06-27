@@ -40,8 +40,56 @@ function _formatInputsData(inputs) {
 }
 
 function _initializeForms() {
+  _initializeSubmitButton()
+  _initializeProfiles()
+}
+
+function _initializeSubmitButton() {
   document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
     submitForm()
   }
+}
+
+function _initializeProfiles() {
+  const select = document.getElementById('accounts-select')
+  _setProfilesSelectOnChange(select)
+  _populateProfilesSelect(select)
+  _setProfilesSaveButtonOnClick()
+  _setProfilesDeleteButtonOnClick()
+}
+
+function _setProfilesSelectOnChange(select) {
+  select.onchange = function (event) {
+    const name = event.target.value
+    selectProfile(name)
+  }
+}
+
+function _populateProfilesSelect(select) {
+  const profiles = readProfiles()
+  for (let key in profiles) {
+    if (profiles.hasOwnProperty(key)) {
+      const option = document.createElement('option')
+      option.value = key
+      option.innerText = key
+      select.appendChild(option)
+    }
+  }
+}
+
+function _setProfilesSaveButtonOnClick() {
+  document.getElementById('accounts-save-button').onclick = function () {
+    console.log('saving profile')
+  }
+}
+
+function _setProfilesDeleteButtonOnClick() {
+  document.getElementById('accounts-delete-button').onclick = function () {
+    console.log('delete clicked')
+  }
+}
+
+function selectProfile(name) {
+  console.log(`selecting profile: ${name}`)
 }

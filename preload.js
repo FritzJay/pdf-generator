@@ -1,11 +1,7 @@
 const {
-  updatePDF,
+  generatePDFs,
   FIELDS
 } = require('./pdf')
-
-// Temp vars
-const INPUT_PATH = './input/input.pdf'
-const OUTPUT_PATH = './output/output.pdf'
 
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
@@ -14,9 +10,11 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function submitForm() {
-  const inputs = document.querySelectorAll('#default-form input')
-  const data = _formatInputsData(inputs)
-  updatePDF(INPUT_PATH, OUTPUT_PATH, data)
+  const infoInputs = document.querySelectorAll('#info-fieldset input')
+  const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
+  const info = _formatInputsData(infoInputs)
+  const pdfTypes = _formatInputsData(pdfTypesInputs)
+  generatePDFs(pdfTypes, info)
 }
 
 function _formatInputsData(inputs) {
@@ -35,7 +33,7 @@ function _formatInputsData(inputs) {
 }
 
 function _initializeForms() {
-  document.getElementById('default-form').onsubmit = function (event) {
+  document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
     submitForm()
   }

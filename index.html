@@ -36,12 +36,16 @@
     <button type="submit" onsubmit="submitForm()">Generate</button>
   </form>
 
-  <div class="container">
-    <select id="accounts-select">
+  <form class="container">
+    <h3>Profiles:</h3>
+    <label for="Profile">Name</label>
+    <input name="Profile" id="profile-name-input">
+    <select id="profile-select">
+      <option selected="selected"></option>
     </select>
-    <button id="accounts-save-button">Save</button>
-    <button id="accounts-delete-button">Delete</button>
-  </div>
+    <button id="profile-save-button">Save</button>
+    <button id="profile-delete-button">Delete</button>
+  </form>
 
   <!-- You can also require other files to run in this process -->
   <script src="./renderer.js"></script>

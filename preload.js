@@ -1,12 +1,16 @@
 const {
-  generatePDFs,
-  FIELDS
+  generatePDFs
 } = require('./lib/pdf')
+const {
+  formatInputsDataForView,
+  formatInfoForPDF
+} = require('./lib/conversions')
 
 const {
   createProfile,
   updateProfile,
   readProfiles,
+  readProfile,
   deleteProfile
 } = require('./lib/profiles')
 
@@ -17,26 +21,43 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function submitForm() {
-  const infoInputs = document.querySelectorAll('#info-fieldset input')
-  const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
-  const info = _formatInputsData(infoInputs)
-  const pdfTypes = _formatInputsData(pdfTypesInputs)
-  generatePDFs(pdfTypes, info)
+  const info = _getInfoFromPage()
+  const fields = formatInfoForPDF(info)
+  const pdfTypes = _getPDFTypesFromPage()
+  generatePDFs(pdfTypes, fields)
 }
 
-function _formatInputsData(inputs) {
-  const fields = {}
-  inputs.forEach(function (input) {
-    if (input.name === 'Date') {
-      [year, month, day] = input.value.split('-')
-      fields[FIELDS.dateDay] = day
-      fields[FIELDS.dateMonth] = month
-      fields[FIELDS.dateYear] = year
-    } else {
-      fields[input.name] = input.value
+function _getInfoFromPage() {
+  const infoInputs = document.querySelectorAll('#info-fieldset input')
+  return formatInputsDataForView(infoInputs)
+}
+
+function _getPDFTypesFromPage() {
+  const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
+  return formatInputsDataForView(pdfTypesInputs)
+}
+
+function selectProfile() {
+  const name = document.getElementById('profile-select').value
+  const profile = readProfile(name)
+  _populateInfoForm(profile)
+}
+
+function _populateInfoForm(savedInfo) {
+  const infoInputs = Array.from(document.querySelectorAll('#info-fieldset input'))
+  for (let key in savedInfo) {
+    if (key === 'Date') {
+      console.log(savedInfo)
     }
-  })
-  return fields
+    const matchingInput = infoInputs.find(function (input) {
+      return input.name === key
+    })
+    if (matchingInput) {
+      matchingInput.value = savedInfo[key]
+    } else {
+      console.log(`Unable to find an input with the name: ${key}`)
+    }
+  }
 }
 
 function _initializeForms() {
@@ -52,10 +73,10 @@ function _initializeSubmitButton() {
 }
 
 function _initializeProfiles() {
-  const select = document.getElementById('accounts-select')
+  const select = document.getElementById('profile-select')
   _setProfilesSelectOnChange(select)
   _populateProfilesSelect(select)
-  _setProfilesSaveButtonOnClick()
+  _setProfilesSaveButtonOnClick(select)
   _setProfilesDeleteButtonOnClick()
 }
 
@@ -78,18 +99,23 @@ function _populateProfilesSelect(select) {
   }
 }
 
-function _setProfilesSaveButtonOnClick() {
-  document.getElementById('accounts-save-button').onclick = function () {
-    console.log('saving profile')
+function _setProfilesSaveButtonOnClick(select) {
+  document.getElementById('profile-save-button').onclick = function (event) {
+    event.preventDefault()
+    _saveProfile(select)
   }
+}
+
+function _saveProfile(select) {
+  const name = document.getElementById('profile-name-input').value
+  const info = _getInfoFromPage()
+  createProfile(name, info)
+  _populateProfilesSelect(select)
 }
 
 function _setProfilesDeleteButtonOnClick() {
-  document.getElementById('accounts-delete-button').onclick = function () {
+  document.getElementById('profile-delete-button').onclick = function (event) {
+    event.preventDefault()
     console.log('delete clicked')
   }
-}
-
-function selectProfile(name) {
-  console.log(`selecting profile: ${name}`)
 }

@@ -1,12 +1,14 @@
 const {
   generatePDFs
 } = require('./lib/pdf')
+
 const {
   formatInputsDataForView,
   formatInfoForPDF
 } = require('./lib/conversions')
 
 const {
+  EMPTY_PROFILE,
   createProfile,
   readProfiles,
   readProfile,
@@ -23,12 +25,36 @@ window.addEventListener('DOMContentLoaded', () => {
   _setDateToToday()
 })
 
+/********* Forms **********/
+function _initializeSubmitButton() {
+  document.getElementById('form').onsubmit = function (event) {
+    event.preventDefault()
+    _submitForm()
+  }
+}
+
 function _submitForm() {
   const info = _getInfoFromPage()
   const fields = formatInfoForPDF(info)
   const pdfTypes = _getPDFTypesFromPage()
   generatePDFs(pdfTypes, fields)
 }
+
+function _getPDFTypesFromPage() {
+  const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
+  return formatInputsDataForView(pdfTypesInputs)
+}
+
+function _getInfoFromPage() {
+  const infoInputs = document.querySelectorAll('#info-fieldset input')
+  return formatInputsDataForView(infoInputs)
+}
+
+function _setDateToToday() {
+  document.getElementById('date').valueAsDate = new Date()
+}
+
+/********* Profiles **********/
 
 function _selectProfile() {
   const name = document.getElementById('profile-select').value
@@ -37,22 +63,10 @@ function _selectProfile() {
   _clearProfileNameInput()
 }
 
-function _getInfoFromPage() {
-  const infoInputs = document.querySelectorAll('#info-fieldset input')
-  return formatInputsDataForView(infoInputs)
-}
-
-function _getPDFTypesFromPage() {
-  const pdfTypesInputs = document.querySelectorAll('#pdf-types-fieldset input')
-  return formatInputsDataForView(pdfTypesInputs)
-}
-
 function _populateInfoForm(savedInfo) {
+  console.log(savedInfo)
   const infoInputs = Array.from(document.querySelectorAll('#info-fieldset input'))
   for (let key in savedInfo) {
-    if (key === 'Date') {
-      console.log(savedInfo)
-    }
     const matchingInput = infoInputs.find(function (input) {
       return input.name === key
     })
@@ -64,11 +78,8 @@ function _populateInfoForm(savedInfo) {
   }
 }
 
-function _initializeSubmitButton() {
-  document.getElementById('form').onsubmit = function (event) {
-    event.preventDefault()
-    _submitForm()
-  }
+function _clearProfileNameInput() {
+  document.getElementById('profile-name-input').value = ''
 }
 
 function _initializeProfiles() {
@@ -83,17 +94,17 @@ function _initializeProfileSelect() {
   _populateProfilesSelect()
 }
 
-function _setDateToToday() {
-  document.getElementById('date').valueAsDate = new Date()
-}
-
 function _handleProfilesSelectOnChange(event) {
   const name = event.target.value
   if (name !== NO_PROFILE_SELECTED_VALUE) {
     _selectProfile(name)
   } else {
-    // Clear info?
+    _clearInfoInputs()
   }
+}
+
+function _clearInfoInputs() {
+  _populateInfoForm(EMPTY_PROFILE)
 }
 
 function _populateProfilesSelect() {
@@ -144,9 +155,6 @@ function _deleteProfile(name) {
   }
 }
 
-function _clearProfileNameInput() {
-  document.getElementById('profile-name-input').value = ''
-}
 
 function _isValidProfileName(name) {
   const nameWithoutSpaces = name.replace(/\s+/g, '')

@@ -30,6 +30,7 @@ function selectProfile() {
   const name = document.getElementById('profile-select').value
   const profile = readProfile(name)
   _populateInfoForm(profile)
+  _clearProfileNameInput()
 }
 
 function _getInfoFromPage() {
@@ -110,14 +111,23 @@ function _setProfilesDeleteButtonOnClick(select) {
   document.getElementById('profile-delete-button').onclick = function (event) {
     event.preventDefault()
     const name = document.getElementById('profile-select').value
-    deleteProfile(name)
-    _populateProfilesSelect(select)
+    if (confirm(`Are you sure you want to delete the profile "${name}"?`)) {
+      deleteProfile(name)
+      _populateProfilesSelect(select)
+      _clearProfileNameInput()
+    }
   }
 }
 
 function _saveProfile(select) {
   const name = document.getElementById('profile-name-input').value
-  const info = _getInfoFromPage()
-  createProfile(name, info)
-  _populateProfilesSelect(select)
+  if (confirm(`Are you sure you want to create/update the profile "${name}"?`)) {
+    const info = _getInfoFromPage()
+    createProfile(name, info)
+    _populateProfilesSelect(select)
+  }
+}
+
+function _clearProfileNameInput() {
+  document.getElementById('profile-name-input').value = ''
 }

@@ -1,11 +1,28 @@
-.container {
-  display: grid;
-  width: 80%;
-  max-width: 500px;
+.info {
+  grid-area: info;
 }
 
-input,
-select {
-  width: 80%;
-  max-width: 300px;
+.profiles {
+  grid-area: profiles;
+}
+
+.pdfs {
+  grid-area: pdfs;
+}
+
+.layout {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-areas:
+    'info info profiles profiles'
+    'info info profiles profiles'
+    'info info profiles profiles'
+    'info info profiles profiles'
+    'pdfs pdfs pdfs pdfs'
+    'pdfs pdfs pdfs pdfs'
+    'pdfs pdfs pdfs pdfs';
+}
+
+.container {
+  display: grid;
 }

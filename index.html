@@ -11,8 +11,8 @@
 <body>
   <h1>PDF Generator</h1>
 
-  <form id="form">
-    <fieldset id="info-fieldset" class="container">
+  <form id="form" class="layout">
+    <fieldset id="info-fieldset" class="info container">
       <h3>Info:</h3>
       <label for="Technician">Technician</label>
       <input name="Technician" type="text" />
@@ -23,7 +23,20 @@
       <label for="Customer">Customer</label>
       <input name="Customer" type="text" />
     </fieldset>
-    <fieldset id="pdf-types-fieldset" class="container">
+    <fieldset class="profiles container">
+      <h3>Profiles:</h3>
+      <label for="Profile">Name</label>
+      <div>
+        <input name="Profile" id="profile-name-input">
+        <button id="profile-save-button">Save</button>
+      </div>
+      <div>
+        <select id="profile-select" required>
+        </select>
+        <button id="profile-delete-button">Delete</button>
+      </div>
+    </fieldset>
+    <fieldset id="pdf-types-fieldset" class="pdfs container">
       <h3>Forms:</h3>
       <p>Specify the number of pdfs to generate.</p>
       <label for="pdf1">Form 1:</label>
@@ -32,20 +45,6 @@
       <input name="pdf2" type="number" value="0" />
     </fieldset>
     <button type="submit" onsubmit="submitForm()">Generate</button>
-  </form>
-
-  <form class="container">
-    <h3>Profiles:</h3>
-    <label for="Profile">Name</label>
-    <div>
-      <input name="Profile" id="profile-name-input">
-      <button id="profile-save-button">Save</button>
-    </div>
-    <div>
-      <select id="profile-select" required>
-      </select>
-      <button id="profile-delete-button">Delete</button>
-    </div>
   </form>
 
   <!-- You can also require other files to run in this process -->

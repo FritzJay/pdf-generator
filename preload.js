@@ -63,6 +63,7 @@ function _populateInfoForm(savedInfo) {
 function _initializeForms() {
   _initializeSubmitButton()
   _initializeProfiles()
+  _setDateToToday()
 }
 
 function _initializeSubmitButton() {
@@ -78,6 +79,10 @@ function _initializeProfiles() {
   _populateProfilesSelect(select)
   _setProfilesSaveButtonOnClick(select)
   _setProfilesDeleteButtonOnClick(select)
+}
+
+function _setDateToToday() {
+  document.getElementById('date').valueAsDate = new Date()
 }
 
 function _setProfilesSelectOnChange(select) {

@@ -13,10 +13,14 @@ const {
   deleteProfile
 } = require('./lib/profiles')
 
+const NO_PROFILE_SELECTED_VALUE = 'None'
+
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
-  _initializeForms()
+  _initializeSubmitButton()
+  _initializeProfiles()
+  _setDateToToday()
 })
 
 function submitForm() {
@@ -60,12 +64,6 @@ function _populateInfoForm(savedInfo) {
   }
 }
 
-function _initializeForms() {
-  _initializeSubmitButton()
-  _initializeProfiles()
-  _setDateToToday()
-}
-
 function _initializeSubmitButton() {
   document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
@@ -74,26 +72,31 @@ function _initializeSubmitButton() {
 }
 
 function _initializeProfiles() {
+  _initializeProfileSelect()
+  document.getElementById('profile-save-button').onclick = _handleProfilesSaveButtonOnClick
+  document.getElementById('profile-delete-button').onclick = _handleProfilesDeleteButtonOnClick
+}
+
+function _initializeProfileSelect() {
   const select = document.getElementById('profile-select')
-  _setProfilesSelectOnChange(select)
-  _populateProfilesSelect(select)
-  _setProfilesSaveButtonOnClick(select)
-  _setProfilesDeleteButtonOnClick(select)
+  select.onchange = _handleProfilesSelectOnChange
+  _populateProfilesSelect()
 }
 
 function _setDateToToday() {
   document.getElementById('date').valueAsDate = new Date()
 }
 
-function _setProfilesSelectOnChange(select) {
-  select.onchange = function (event) {
-    const name = event.target.value
+function _handleProfilesSelectOnChange(event) {
+  const name = event.target.value
+  if (name !== NO_PROFILE_SELECTED_VALUE) {
     selectProfile(name)
   }
 }
 
-function _populateProfilesSelect(select) {
-  select.innerHTML = ''
+function _populateProfilesSelect() {
+  const select = document.getElementById('profile-select')
+  select.innerHTML = '<option selected="selected">None</option>'
   const profiles = readProfiles()
   for (let key in profiles) {
     if (profiles.hasOwnProperty(key)) {
@@ -105,31 +108,37 @@ function _populateProfilesSelect(select) {
   }
 }
 
-function _setProfilesSaveButtonOnClick(select) {
-  document.getElementById('profile-save-button').onclick = function (event) {
-    event.preventDefault()
-    _saveProfile(select)
+function _handleProfilesSaveButtonOnClick(event) {
+  event.preventDefault()
+  const name = document.getElementById('profile-name-input').value
+  if (name !== NO_PROFILE_SELECTED_VALUE) {
+    _saveProfile(name)
   }
 }
 
-function _setProfilesDeleteButtonOnClick(select) {
+function _handleProfilesDeleteButtonOnClick() {
   document.getElementById('profile-delete-button').onclick = function (event) {
     event.preventDefault()
     const name = document.getElementById('profile-select').value
-    if (confirm(`Are you sure you want to delete the profile "${name}"?`)) {
-      deleteProfile(name)
-      _populateProfilesSelect(select)
-      _clearProfileNameInput()
+    if (name !== NO_PROFILE_SELECTED_VALUE) {
+      _deleteProfile(name)
     }
   }
 }
 
-function _saveProfile(select) {
-  const name = document.getElementById('profile-name-input').value
+function _saveProfile(name) {
   if (confirm(`Are you sure you want to create/update the profile "${name}"?`)) {
     const info = _getInfoFromPage()
     createProfile(name, info)
-    _populateProfilesSelect(select)
+    _populateProfilesSelect()
+  }
+}
+
+function _deleteProfile(name) {
+  if (confirm(`Are you sure you want to delete the profile "${name}"?`)) {
+    deleteProfile(name)
+    _populateProfilesSelect()
+    _clearProfileNameInput()
   }
 }
 

@@ -3,3 +3,9 @@
   width: 80%;
   max-width: 500px;
 }
+
+input,
+select {
+  width: 80%;
+  max-width: 300px;
+}

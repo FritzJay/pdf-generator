@@ -36,12 +36,15 @@
   <form class="container">
     <h3>Profiles:</h3>
     <label for="Profile">Name</label>
-    <input name="Profile" id="profile-name-input">
-    <select id="profile-select">
-      <option selected="selected"></option>
-    </select>
-    <button id="profile-save-button">Save</button>
-    <button id="profile-delete-button">Delete</button>
+    <div>
+      <input name="Profile" id="profile-name-input">
+      <button id="profile-save-button">Save</button>
+    </div>
+    <div>
+      <select id="profile-select" required>
+      </select>
+      <button id="profile-delete-button">Delete</button>
+    </div>
   </form>
 
   <!-- You can also require other files to run in this process -->

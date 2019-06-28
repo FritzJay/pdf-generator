@@ -68,6 +68,7 @@ app.on('web-contents-created', (event, contents) => {
   })
 })
 
+// Hot reload
 require('electron-reload')(__dirname, {
   ignored: /node_modules|[\/\\]\.|input|output/,
   argv: []

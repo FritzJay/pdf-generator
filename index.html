@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
   <title>PDF Generator</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -16,7 +17,7 @@
       <label for="Technician">Technician</label>
       <input name="Technician" type="text" />
       <label for="Date">Date</label>
-      <input name="Date" type="date" />
+      <input id="date" name="Date" type="date" />
       <label for="SO">S/O</label>
       <input name="SO" type="text" />
       <label for="Customer">Customer</label>

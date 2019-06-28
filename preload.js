@@ -91,6 +91,8 @@ function _handleProfilesSelectOnChange(event) {
   const name = event.target.value
   if (name !== NO_PROFILE_SELECTED_VALUE) {
     _selectProfile(name)
+  } else {
+    // Clear info?
   }
 }
 
@@ -111,7 +113,7 @@ function _populateProfilesSelect() {
 function _handleProfilesSaveButtonOnClick(event) {
   event.preventDefault()
   const name = document.getElementById('profile-name-input').value
-  if (name !== NO_PROFILE_SELECTED_VALUE) {
+  if (_isValidProfileName(name)) {
     _saveProfile(name)
   }
 }
@@ -120,7 +122,7 @@ function _handleProfilesDeleteButtonOnClick() {
   document.getElementById('profile-delete-button').onclick = function (event) {
     event.preventDefault()
     const name = document.getElementById('profile-select').value
-    if (name !== NO_PROFILE_SELECTED_VALUE) {
+    if (_isValidProfileName(name)) {
       _deleteProfile(name)
     }
   }
@@ -144,4 +146,14 @@ function _deleteProfile(name) {
 
 function _clearProfileNameInput() {
   document.getElementById('profile-name-input').value = ''
+}
+
+function _isValidProfileName(name) {
+  const nameWithoutSpaces = name.replace(/\s+/g, '')
+  if ((nameWithoutSpaces !== NO_PROFILE_SELECTED_VALUE) && (nameWithoutSpaces !== undefined) && (nameWithoutSpaces !== null) && (nameWithoutSpaces !== '')) {
+    return true
+  } else {
+    alert('Invalid profile name.')
+    return false
+  }
 }

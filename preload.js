@@ -23,14 +23,14 @@ window.addEventListener('DOMContentLoaded', () => {
   _setDateToToday()
 })
 
-function submitForm() {
+function _submitForm() {
   const info = _getInfoFromPage()
   const fields = formatInfoForPDF(info)
   const pdfTypes = _getPDFTypesFromPage()
   generatePDFs(pdfTypes, fields)
 }
 
-function selectProfile() {
+function _selectProfile() {
   const name = document.getElementById('profile-select').value
   const profile = readProfile(name)
   _populateInfoForm(profile)
@@ -67,7 +67,7 @@ function _populateInfoForm(savedInfo) {
 function _initializeSubmitButton() {
   document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
-    submitForm()
+    _submitForm()
   }
 }
 
@@ -90,7 +90,7 @@ function _setDateToToday() {
 function _handleProfilesSelectOnChange(event) {
   const name = event.target.value
   if (name !== NO_PROFILE_SELECTED_VALUE) {
-    selectProfile(name)
+    _selectProfile(name)
   }
 }
 

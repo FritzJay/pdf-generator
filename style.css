@@ -1,13 +1,12 @@
-.info {
-  grid-area: info;
+input,
+select {
+  width: 50%;
+  min-width: 200px;
 }
 
-.profiles {
-  grid-area: profiles;
-}
-
-.pdfs {
-  grid-area: pdfs;
+.title {
+  width: 100%;
+  text-align: center;
 }
 
 .layout {
@@ -21,6 +20,20 @@
     'pdfs pdfs pdfs pdfs'
     'pdfs pdfs pdfs pdfs'
     'pdfs pdfs pdfs pdfs';
+  width: 80%;
+  margin: auto;
+}
+
+.info {
+  grid-area: info;
+}
+
+.profiles {
+  grid-area: profiles;
+}
+
+.pdfs {
+  grid-area: pdfs;
 }
 
 .container {

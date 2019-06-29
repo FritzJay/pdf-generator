@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 input,
 select {
   width: 50%;
@@ -30,6 +34,10 @@ select {
 
 .profiles {
   grid-area: profiles;
+}
+
+.profiles button {
+  width: 70px;
 }
 
 .pdfs {

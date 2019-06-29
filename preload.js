@@ -1,5 +1,6 @@
 const {
-  generatePDFs
+  generatePDFs,
+  getAvailablePDFTypes,
 } = require('./lib/pdf')
 
 const {
@@ -23,6 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
   _initializeSubmitButton()
   _initializeProfiles()
   _setDateToToday()
+  _initializeForms()
 })
 
 /********* Forms **********/
@@ -52,6 +54,30 @@ function _getInfoFromPage() {
 
 function _setDateToToday() {
   document.getElementById('date').valueAsDate = new Date()
+}
+
+function _initializeForms() {
+  const formsFieldset = document.getElementById('pdf-types-fieldset')
+  const pdfTypes = getAvailablePDFTypes()
+  pdfTypes.forEach(function (pdfType) {
+    _addPDFTypeLabelToElement(pdfType, formsFieldset)
+    _addPDFTypeInputToElement(pdfType, formsFieldset)
+  })
+}
+
+function _addPDFTypeLabelToElement(pdfType, element) {
+  const label = document.createElement('label')
+  label.innerText = pdfType + ':'
+  label.setAttribute('for', pdfType)
+  element.appendChild(label)
+}
+
+function _addPDFTypeInputToElement(pdfType, element) {
+  const input = document.createElement('input')
+  input.setAttribute('name', pdfType)
+  input.setAttribute('type', 'number')
+  input.setAttribute('value', 0)
+  element.appendChild(input)
 }
 
 /********* Profiles **********/

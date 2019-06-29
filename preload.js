@@ -35,6 +35,10 @@ function _initializeInfo() {
   _setDateToToday()
 }
 
+function _setDateToToday() {
+  document.getElementById('date').valueAsDate = new Date()
+}
+
 function _initializeSubmitButton() {
   document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
@@ -59,37 +63,7 @@ function _getInfoFromPage() {
   return formatInputsDataForView(infoInputs)
 }
 
-function _setDateToToday() {
-  document.getElementById('date').valueAsDate = new Date()
-}
-
 /********* Profiles **********/
-
-function _selectProfile() {
-  const name = document.getElementById('profile-select').value
-  const profile = readProfile(name)
-  _populateFieldset('info-fieldset', profile)
-  _populateFieldset('settings-fieldset', profile)
-  _clearProfileNameInput()
-}
-
-function _populateFieldset(fieldsetID, savedInfo) {
-  const inputs = Array.from(document.querySelectorAll(`#${fieldsetID} input`))
-  for (let key in savedInfo) {
-    const matchingInput = inputs.find(function (input) {
-      return input.name === key
-    })
-    if (matchingInput) {
-      matchingInput.value = savedInfo[key]
-    } else {
-      console.warn(`Unable to find an input with the name: ${key}`)
-    }
-  }
-}
-
-function _clearProfileNameInput() {
-  document.getElementById('profile-name-input').value = ''
-}
 
 function _initializeProfiles() {
   _initializeProfileSelect()
@@ -101,17 +75,6 @@ function _initializeProfileSelect() {
   const select = document.getElementById('profile-select')
   select.onchange = _handleProfilesSelectOnChange
   _populateProfilesSelect()
-}
-
-function _handleProfilesSelectOnChange(event) {
-  const name = event.target.value
-  if (name !== NO_PROFILE_SELECTED_VALUE) {
-    _selectProfile(name)
-  } else {
-    // Clear inputs
-    _populateFieldset('info-fieldset', EMPTY_PROFILE)
-    _populateFieldset('settings-fieldset', EMPTY_PROFILE)
-  }
 }
 
 function _populateProfilesSelect() {
@@ -128,21 +91,34 @@ function _populateProfilesSelect() {
   }
 }
 
+function _handleProfilesSelectOnChange(event) {
+  const name = event.target.value
+  if (name !== NO_PROFILE_SELECTED_VALUE) {
+    _selectProfile(name)
+  } else {
+    // Clear inputs
+    _populateFieldset('info-fieldset', EMPTY_PROFILE)
+    _populateFieldset('settings-fieldset', EMPTY_PROFILE)
+  }
+}
+
+function _selectProfile() {
+  const name = document.getElementById('profile-select').value
+  const profile = readProfile(name)
+  _populateFieldset('info-fieldset', profile)
+  _populateFieldset('settings-fieldset', profile)
+  _clearProfileNameInput()
+}
+
+function _clearProfileNameInput() {
+  document.getElementById('profile-name-input').value = ''
+}
+
 function _handleProfilesSaveButtonOnClick(event) {
   event.preventDefault()
   const name = document.getElementById('profile-name-input').value
   if (_isValidProfileName(name)) {
     _saveProfile(name)
-  }
-}
-
-function _handleProfilesDeleteButtonOnClick() {
-  document.getElementById('profile-delete-button').onclick = function (event) {
-    event.preventDefault()
-    const name = document.getElementById('profile-select').value
-    if (_isValidProfileName(name)) {
-      _deleteProfile(name)
-    }
   }
 }
 
@@ -164,6 +140,16 @@ function _setSelectedProfile(name) {
   select.value = name
 }
 
+function _handleProfilesDeleteButtonOnClick() {
+  document.getElementById('profile-delete-button').onclick = function (event) {
+    event.preventDefault()
+    const name = document.getElementById('profile-select').value
+    if (_isValidProfileName(name)) {
+      _deleteProfile(name)
+    }
+  }
+}
+
 function _deleteProfile(name) {
   if (confirm(`Are you sure you want to delete the profile "${name}"?`)) {
     deleteProfile(name)
@@ -171,7 +157,6 @@ function _deleteProfile(name) {
     _clearProfileNameInput()
   }
 }
-
 
 function _isValidProfileName(name) {
   const nameWithoutSpaces = name.replace(/\s+/g, '')
@@ -218,23 +203,37 @@ function _initializePDFs() {
 function _populatePDFTypes(sourceDirectory) {
   const formsFieldset = document.getElementById('pdf-types-fieldset')
   _clearPDFTypes(formsFieldset)
+  let pdfTypes
   try {
-    const pdfTypes = getAvailablePDFTypes(sourceDirectory)
-    if (pdfTypes.length < 1) {
-      _addMessageToElement('The source directory does not contain any pdfs.', formsFieldset, {
-        id: 'pdf-types-message'
-      })
-    } else {
-      pdfTypes.forEach(function (pdfType) {
-        _addPDFTypeLabelToElement(pdfType, formsFieldset)
-        _addPDFTypeInputToElement(pdfType, formsFieldset)
-      })
-    }
+    pdfTypes = getAvailablePDFTypes(sourceDirectory)
   } catch (error) {
     _addMessageToElement('The source directory does not exist.', formsFieldset, {
       id: 'pdf-types-message'
     })
+    return
   }
+  _addPDFTypesToFieldset(pdfTypes, formsFieldset)
+}
+
+function _addPDFTypesToFieldset(pdfTypes, formsFieldset) {
+  if (pdfTypes.length < 1) {
+    _addMessageToElement('The source directory does not contain any pdfs.', formsFieldset, {
+      id: 'pdf-types-message'
+    })
+  } else {
+    pdfTypes.forEach(function (pdfType) {
+      _addPDFTypeLabelToElement(pdfType, formsFieldset)
+      _addPDFTypeInputToElement(pdfType, formsFieldset)
+    })
+  }
+}
+
+function _clearPDFTypes(formsFieldset) {
+  Array.from(formsFieldset.childNodes).forEach(function (child) {
+    if (child.tagName === 'LABEL' || child.tagName === 'INPUT' || child.id === 'pdf-types-message') {
+      formsFieldset.removeChild(child)
+    }
+  })
 }
 
 function _addPDFTypeLabelToElement(pdfType, element) {
@@ -254,6 +253,22 @@ function _addPDFTypeInputToElement(pdfType, element) {
   element.appendChild(input)
 }
 
+/********* PDFs **********/
+
+function _populateFieldset(fieldsetID, savedInfo) {
+  const inputs = Array.from(document.querySelectorAll(`#${fieldsetID} input`))
+  for (let key in savedInfo) {
+    const matchingInput = inputs.find(function (input) {
+      return input.name === key
+    })
+    if (matchingInput) {
+      matchingInput.value = savedInfo[key]
+    } else {
+      console.warn(`Unable to find an input with the name: ${key}`)
+    }
+  }
+}
+
 function _addMessageToElement(message, element, attributes = {}) {
   const p = document.createElement('p')
   Object.keys(attributes).forEach(function (key) {
@@ -261,12 +276,4 @@ function _addMessageToElement(message, element, attributes = {}) {
   })
   p.innerText = message
   element.appendChild(p)
-}
-
-function _clearPDFTypes(formsFieldset) {
-  Array.from(formsFieldset.childNodes).forEach(function (child) {
-    if (child.tagName === 'LABEL' || child.tagName === 'INPUT' || child.id === 'pdf-types-message') {
-      formsFieldset.removeChild(child)
-    }
-  })
 }

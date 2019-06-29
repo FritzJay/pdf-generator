@@ -63,21 +63,6 @@ function _setDateToToday() {
   document.getElementById('date').valueAsDate = new Date()
 }
 
-function _addPDFTypeLabelToElement(pdfType, element) {
-  const label = document.createElement('label')
-  label.innerText = pdfType + ':'
-  label.setAttribute('for', pdfType)
-  element.appendChild(label)
-}
-
-function _addPDFTypeInputToElement(pdfType, element) {
-  const input = document.createElement('input')
-  input.setAttribute('name', pdfType)
-  input.setAttribute('type', 'number')
-  input.setAttribute('value', 0)
-  element.appendChild(input)
-}
-
 /********* Profiles **********/
 
 function _selectProfile() {
@@ -165,7 +150,11 @@ function _handleProfilesDeleteButtonOnClick() {
 function _saveProfile(name) {
   if (confirm(`Are you sure you want to create/update the profile "${name}"?`)) {
     const info = _getInfoFromPage()
-    createProfile(name, info)
+    const settings = _getSettingsFromPage()
+    createProfile(name, {
+      ...info,
+      ...settings
+    })
     _populateProfilesSelect()
     _setSelectedProfile(name)
   }
@@ -215,6 +204,11 @@ function _handleDestinationDirectoryChange(event) {
   document.getElementById('destination-directory-input').value = directory
 }
 
+function _getSettingsFromPage() {
+  const settingsInputs = document.querySelectorAll('#settings-fieldset input[type=text]')
+  return formatInputsDataForView(settingsInputs)
+}
+
 /********* PDFs **********/
 
 function _initializePDFs() {
@@ -242,6 +236,23 @@ function _populatePDFTypes(sourceDirectory) {
       id: 'pdf-types-message'
     })
   }
+}
+
+function _addPDFTypeLabelToElement(pdfType, element) {
+  const label = document.createElement('label')
+  label.innerText = pdfType + ':'
+  label.setAttribute('for', pdfType)
+  element.appendChild(label)
+}
+
+function _addPDFTypeInputToElement(pdfType, element) {
+  const input = document.createElement('input')
+  input.setAttribute('name', pdfType)
+  input.setAttribute('type', 'number')
+  input.setAttribute('value', 0)
+  input.setAttribute('min', 0)
+  input.setAttribute('max', 100)
+  element.appendChild(input)
 }
 
 function _addMessageToElement(message, element, attributes = {}) {

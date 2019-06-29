@@ -75,7 +75,6 @@ function _selectProfile() {
 
 function _populateFieldset(fieldsetID, savedInfo) {
   const inputs = Array.from(document.querySelectorAll(`#${fieldsetID} input`))
-  console.log(fieldsetID, inputs)
   for (let key in savedInfo) {
     const matchingInput = inputs.find(function (input) {
       return input.name === key
@@ -83,7 +82,7 @@ function _populateFieldset(fieldsetID, savedInfo) {
     if (matchingInput) {
       matchingInput.value = savedInfo[key]
     } else {
-      console.log(`Unable to find an input with the name: ${key}`)
+      console.warn(`Unable to find an input with the name: ${key}`)
     }
   }
 }

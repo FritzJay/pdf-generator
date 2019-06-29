@@ -19,8 +19,8 @@ select {
   grid-template-areas:
     'info info profiles profiles'
     'info info profiles profiles'
-    'info info profiles profiles'
-    'info info profiles profiles'
+    'info info settings settings'
+    'info info settings settings'
     'pdfs pdfs pdfs pdfs'
     'pdfs pdfs pdfs pdfs'
     'pdfs pdfs pdfs pdfs';
@@ -36,8 +36,8 @@ select {
   grid-area: profiles;
 }
 
-.profiles button {
-  width: 70px;
+.settings {
+  grid-area: settings;
 }
 
 .pdfs {
@@ -46,4 +46,17 @@ select {
 
 .container {
   display: grid;
+}
+
+.profiles button {
+  width: 70px;
+}
+
+.directory-button {
+  position: absolute;
+  width: 90px;
+}
+
+.directory-input {
+  transform: translateX(90px);
 }

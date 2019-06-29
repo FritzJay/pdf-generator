@@ -37,6 +37,20 @@
         <button id="profile-delete-button">Delete</button>
       </div>
     </fieldset>
+    <fieldset id="settings-fieldset" class="settings container">
+      <h3>Settings:</h3>
+      <label for="SourceDirectory">Source</label>
+      <div>
+        <input id="source-directory-button" type="file" webkitdirectory class="directory-button">
+        <input name="SourceDirectory" id="source-directory-input" type="text" class="directory-input" readonly>
+      </div>
+      <label for="DestinationDirectory">Destination</label>
+      <div>
+        <input id="destination-directory-button" type="file" webkitdirectory class="directory-button">
+        <input name="DestinationDirectory" id="destination-directory-input" type="text" class="directory-input"
+          readonly>
+      </div>
+    </fieldset>
     <fieldset id="pdf-types-fieldset" class="pdfs container">
       <h3>Forms:</h3>
       <p>Specify the number of pdfs to generate.</p>

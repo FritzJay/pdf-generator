@@ -5,7 +5,9 @@ const {
 
 const {
   formatInputsDataForView,
-  formatInfoForPDF
+  formatInfoForPDF,
+  DEFAULT_DESTINATION_DIRECTORY,
+  DEFAULT_SOURCE_DIRECTORY
 } = require('./lib/conversions')
 
 const {
@@ -21,13 +23,18 @@ const NO_PROFILE_SELECTED_VALUE = 'None'
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
-  _initializeForms()
-  _setDateToToday()
+  _initializeInfo()
   _initializeProfiles()
+  _initializeSettings()
+  _initializePDFs()
   _initializeSubmitButton()
 })
 
 /********* Forms **********/
+function _initializeInfo() {
+  _setDateToToday()
+}
+
 function _initializeSubmitButton() {
   document.getElementById('form').onsubmit = function (event) {
     event.preventDefault()
@@ -56,15 +63,6 @@ function _setDateToToday() {
   document.getElementById('date').valueAsDate = new Date()
 }
 
-function _initializeForms() {
-  const formsFieldset = document.getElementById('pdf-types-fieldset')
-  const pdfTypes = getAvailablePDFTypes()
-  pdfTypes.forEach(function (pdfType) {
-    _addPDFTypeLabelToElement(pdfType, formsFieldset)
-    _addPDFTypeInputToElement(pdfType, formsFieldset)
-  })
-}
-
 function _addPDFTypeLabelToElement(pdfType, element) {
   const label = document.createElement('label')
   label.innerText = pdfType + ':'
@@ -85,14 +83,16 @@ function _addPDFTypeInputToElement(pdfType, element) {
 function _selectProfile() {
   const name = document.getElementById('profile-select').value
   const profile = readProfile(name)
-  _populateInfoForm(profile)
+  _populateFieldset('info-fieldset', profile)
+  _populateFieldset('settings-fieldset', profile)
   _clearProfileNameInput()
 }
 
-function _populateInfoForm(savedInfo) {
-  const infoInputs = Array.from(document.querySelectorAll('#info-fieldset input'))
+function _populateFieldset(fieldsetID, savedInfo) {
+  const inputs = Array.from(document.querySelectorAll(`#${fieldsetID} input`))
+  console.log(fieldsetID, inputs)
   for (let key in savedInfo) {
-    const matchingInput = infoInputs.find(function (input) {
+    const matchingInput = inputs.find(function (input) {
       return input.name === key
     })
     if (matchingInput) {
@@ -124,12 +124,10 @@ function _handleProfilesSelectOnChange(event) {
   if (name !== NO_PROFILE_SELECTED_VALUE) {
     _selectProfile(name)
   } else {
-    _clearInfoInputs()
+    // Clear inputs
+    _populateFieldset('info-fieldset', EMPTY_PROFILE)
+    _populateFieldset('settings-fieldset', EMPTY_PROFILE)
   }
-}
-
-function _clearInfoInputs() {
-  _populateInfoForm(EMPTY_PROFILE)
 }
 
 function _populateProfilesSelect() {
@@ -195,4 +193,70 @@ function _isValidProfileName(name) {
     alert('Invalid profile name.')
     return false
   }
+}
+
+/********* Settings **********/
+
+function _initializeSettings() {
+  document.getElementById('source-directory-button').onchange = _handleSourceDirectoryChange
+  document.getElementById('destination-directory-button').onchange = _handleDestinationDirectoryChange
+  document.getElementById('source-directory-input').value = DEFAULT_SOURCE_DIRECTORY
+  document.getElementById('destination-directory-input').value = DEFAULT_DESTINATION_DIRECTORY
+}
+
+function _handleSourceDirectoryChange(event) {
+  const directory = event.target.files[0].path
+  document.getElementById('source-directory-input').value = directory
+  _populatePDFTypes(directory)
+}
+
+function _handleDestinationDirectoryChange(event) {
+  const directory = event.target.files[0].path
+  document.getElementById('destination-directory-input').value = directory
+}
+
+/********* PDFs **********/
+
+function _initializePDFs() {
+  const sourceDirectory = document.getElementById('source-directory-input').value
+  _populatePDFTypes(sourceDirectory)
+}
+
+function _populatePDFTypes(sourceDirectory) {
+  const formsFieldset = document.getElementById('pdf-types-fieldset')
+  _clearPDFTypes(formsFieldset)
+  try {
+    const pdfTypes = getAvailablePDFTypes(sourceDirectory)
+    if (pdfTypes.length < 1) {
+      _addMessageToElement('The source directory does not contain any pdfs.', formsFieldset, {
+        id: 'pdf-types-message'
+      })
+    } else {
+      pdfTypes.forEach(function (pdfType) {
+        _addPDFTypeLabelToElement(pdfType, formsFieldset)
+        _addPDFTypeInputToElement(pdfType, formsFieldset)
+      })
+    }
+  } catch (error) {
+    _addMessageToElement('The source directory does not exist.', formsFieldset, {
+      id: 'pdf-types-message'
+    })
+  }
+}
+
+function _addMessageToElement(message, element, attributes = {}) {
+  const p = document.createElement('p')
+  Object.keys(attributes).forEach(function (key) {
+    p.setAttribute(key, attributes[key])
+  })
+  p.innerText = message
+  element.appendChild(p)
+}
+
+function _clearPDFTypes(formsFieldset) {
+  Array.from(formsFieldset.childNodes).forEach(function (child) {
+    if (child.tagName === 'LABEL' || child.tagName === 'INPUT' || child.id === 'pdf-types-message') {
+      formsFieldset.removeChild(child)
+    }
+  })
 }

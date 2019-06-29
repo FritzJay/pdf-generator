@@ -21,10 +21,10 @@ const NO_PROFILE_SELECTED_VALUE = 'None'
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
-  _initializeSubmitButton()
-  _initializeProfiles()
-  _setDateToToday()
   _initializeForms()
+  _setDateToToday()
+  _initializeProfiles()
+  _initializeSubmitButton()
 })
 
 /********* Forms **********/
@@ -90,7 +90,6 @@ function _selectProfile() {
 }
 
 function _populateInfoForm(savedInfo) {
-  console.log(savedInfo)
   const infoInputs = Array.from(document.querySelectorAll('#info-fieldset input'))
   for (let key in savedInfo) {
     const matchingInput = infoInputs.find(function (input) {
@@ -170,7 +169,13 @@ function _saveProfile(name) {
     const info = _getInfoFromPage()
     createProfile(name, info)
     _populateProfilesSelect()
+    _setSelectedProfile(name)
   }
+}
+
+function _setSelectedProfile(name) {
+  const select = document.getElementById('profile-select')
+  select.value = name
 }
 
 function _deleteProfile(name) {

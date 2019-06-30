@@ -140,13 +140,11 @@ function _setSelectedProfile(name) {
   select.value = name
 }
 
-function _handleProfilesDeleteButtonOnClick() {
-  document.getElementById('profile-delete-button').onclick = function (event) {
-    event.preventDefault()
-    const name = document.getElementById('profile-select').value
-    if (_isValidProfileName(name)) {
-      _deleteProfile(name)
-    }
+function _handleProfilesDeleteButtonOnClick(event) {
+  event.preventDefault()
+  const name = document.getElementById('profile-select').value
+  if (_isValidProfileName(name)) {
+    _deleteProfile(name)
   }
 }
 

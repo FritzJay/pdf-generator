@@ -50,7 +50,11 @@ function _submitForm() {
   const info = _getInfoFromPage()
   const fields = formatInfoForPDF(info)
   const pdfTypes = _getPDFTypesFromPage()
-  generatePDFs(pdfTypes, fields)
+  const {
+    SourceDirectory,
+    DestinationDirectory
+  } = _getSettingsFromPage()
+  generatePDFs(pdfTypes, fields, SourceDirectory, DestinationDirectory)
 }
 
 function _getPDFTypesFromPage() {

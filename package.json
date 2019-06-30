@@ -1,5 +1,5 @@
 {
-  "name": "pdf-helper",
+  "name": "ftr-automation",
   "version": "1.0.0",
   "description": "Generate pre-filled PDF files.",
   "main": "main.js",

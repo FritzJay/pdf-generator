@@ -6,6 +6,7 @@ input,
 select {
   width: 50%;
   min-width: 200px;
+  margin-bottom: 5px;
 }
 
 .title {

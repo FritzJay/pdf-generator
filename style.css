@@ -18,13 +18,13 @@ select {
   display: grid;
   grid-gap: 1em;
   grid-template-areas:
-    'info info profiles profiles'
-    'info info profiles profiles'
-    'info info settings settings'
-    'info info settings settings'
-    'pdfs pdfs pdfs pdfs'
-    'pdfs pdfs pdfs pdfs'
-    'pdfs pdfs pdfs pdfs';
+    "info info profiles profiles"
+    "info info profiles profiles"
+    "info info settings settings"
+    "info info settings settings"
+    "pdfs pdfs pdfs pdfs"
+    "pdfs pdfs pdfs pdfs"
+    "pdfs pdfs pdfs pdfs";
   width: 80%;
   margin: auto;
 }

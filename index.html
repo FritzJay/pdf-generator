@@ -1,79 +1,98 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
+    <title>FTR Automation</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-  <title>FTR Automation</title>
-  <link rel="stylesheet" type="text/css" href="style.css" />
-</head>
+  <body>
+    <h1 class="title">FTR Automation</h1>
 
-<body>
-  <h1 class="title">FTR Automation</h1>
+    <form id="form" class="layout">
+      <fieldset id="info-fieldset" class="info container">
+        <h3>Info:</h3>
+        <label for="Technician">Technician</label>
+        <input name="Technician" type="text" />
+        <label for="Date">Date</label>
+        <input id="date" name="Date" type="date" />
+        <label for="SO">S/O</label>
+        <input name="SO" type="text" />
+        <label for="Customer">Customer</label>
+        <input name="Customer" type="text" />
+        <label for="Building">Building</label>
+        <input name="Building" type="text" />
+        <label for="Building Number">Building Number</label>
+        <input name="Building Number" type="text" />
+        <label for="Location">Location</label>
+        <input name="Location" type="text" />
+        <label for="Name PR">Name PR</label>
+        <input name="Name PR" type="text" />
+        <label for="Phone">Phone</label>
+        <input name="Phone" type="text" />
+        <label for="Email">Email</label>
+        <input name="Email" type="text" />
+        <label for="Fax">Fax</label>
+        <input name="Fax" type="text" />
+      </fieldset>
+      <fieldset class="profiles container">
+        <h3>Profiles:</h3>
+        <label for="Profile">Name</label>
+        <div>
+          <input name="Profile" id="profile-name-input" />
+          <button id="profile-save-button">Save</button>
+        </div>
+        <div>
+          <select id="profile-select" required>
+            <option selected="selected">None</option>
+          </select>
+          <button id="profile-delete-button">Delete</button>
+        </div>
+      </fieldset>
+      <fieldset id="settings-fieldset" class="settings container">
+        <h3>Settings:</h3>
+        <label for="SourceDirectory">Source</label>
+        <div>
+          <input
+            id="source-directory-button"
+            type="file"
+            webkitdirectory
+            class="directory-button"
+          />
+          <input
+            name="SourceDirectory"
+            id="source-directory-input"
+            type="text"
+            class="directory-input"
+            readonly
+          />
+        </div>
+        <label for="DestinationDirectory">Destination</label>
+        <div>
+          <input
+            id="destination-directory-button"
+            type="file"
+            webkitdirectory
+            class="directory-button"
+          />
+          <input
+            name="DestinationDirectory"
+            id="destination-directory-input"
+            type="text"
+            class="directory-input"
+            readonly
+          />
+        </div>
+      </fieldset>
+      <fieldset id="pdf-types-fieldset" class="pdfs container">
+        <h3>Forms:</h3>
+        <p>Specify the number of pdfs to generate.</p>
+      </fieldset>
+      <button type="submit">Generate</button>
+    </form>
 
-  <form id="form" class="layout">
-    <fieldset id="info-fieldset" class="info container">
-      <h3>Info:</h3>
-      <label for="Technician">Technician</label>
-      <input name="Technician" type="text" />
-      <label for="Date">Date</label>
-      <input id="date" name="Date" type="date" />
-      <label for="SO">S/O</label>
-      <input name="SO" type="text" />
-      <label for="Customer">Customer</label>
-      <input name="Customer" type="text" />
-      <label for="Building">Building</label>
-      <input name="Building" type="text" />
-      <label for="Building Number">Building Number</label>
-      <input name="Building Number" type="text" />
-      <label for="Location">Location</label>
-      <input name="Location" type="text" />
-      <label for="Name PR">Name PR</label>
-      <input name="Name PR" type="text" />
-      <label for="Phone">Phone</label>
-      <input name="Phone" type="text" />
-      <label for="Email">Email</label>
-      <input name="Email" type="text" />
-      <label for="Fax">Fax</label>
-      <input name="Fax" type="text" />
-    </fieldset>
-    <fieldset class="profiles container">
-      <h3>Profiles:</h3>
-      <label for="Profile">Name</label>
-      <div>
-        <input name="Profile" id="profile-name-input">
-        <button id="profile-save-button">Save</button>
-      </div>
-      <div>
-        <select id="profile-select" required>
-          <option selected="selected">None</option>
-        </select>
-        <button id="profile-delete-button">Delete</button>
-      </div>
-    </fieldset>
-    <fieldset id="settings-fieldset" class="settings container">
-      <h3>Settings:</h3>
-      <label for="SourceDirectory">Source</label>
-      <div>
-        <input id="source-directory-button" type="file" webkitdirectory class="directory-button">
-        <input name="SourceDirectory" id="source-directory-input" type="text" class="directory-input" readonly>
-      </div>
-      <label for="DestinationDirectory">Destination</label>
-      <div>
-        <input id="destination-directory-button" type="file" webkitdirectory class="directory-button">
-        <input name="DestinationDirectory" id="destination-directory-input" type="text" class="directory-input"
-          readonly>
-      </div>
-    </fieldset>
-    <fieldset id="pdf-types-fieldset" class="pdfs container">
-      <h3>Forms:</h3>
-      <p>Specify the number of pdfs to generate.</p>
-    </fieldset>
-    <button type="submit">Generate</button>
-  </form>
-
-  <!-- You can also require other files to run in this process -->
-  <script src="./renderer.js"></script>
-</body>
-
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+  </body>
 </html>

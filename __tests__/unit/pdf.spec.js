@@ -1,18 +1,16 @@
-const path = require("path");
 const { _numberDuplicateFields } = require("../../lib/pdf");
 
 describe("_numberDuplicateFields", () => {
-  const pdfType = "NTP_Server";
-  const inputDirectory = path.resolve(
-    "Z:\\Users\\Fritz.Jay\\Documents\\Programming\\pdf-generator\\input"
-  );
-
   it("works", () => {
+    const fields = ["SO", "SO_2"];
     const info = { SO: "test" };
 
-    expect(_numberDuplicateFields(pdfType, inputDirectory, info)).toEqual({
+    const result = _numberDuplicateFields(fields, info);
+    const expected = {
       SO: "test",
-      "SO#2": "test"
-    });
+      SO_2: "test"
+    };
+
+    expect(result).toEqual(expected);
   });
 });
